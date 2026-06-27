@@ -121,10 +121,15 @@ def get_finetuned_reader(recog_ckpt: str, gpu: bool = False):
         from collections import OrderedDict
         rdr = easyocr.Reader(["en"], gpu=gpu, quantize=False)
         sd = torch.load(recog_ckpt, map_location="cpu")
-        # tolerate DataParallel 'module.' prefixes from a GPU-trained checkpoint
+        # normalize checkpoint keys to be prefix-free (a GPU/DataParallel-trained
+        # checkpoint carries a 'module.' prefix; a CPU one does not)
         sd = OrderedDict((k[7:] if k.startswith("module.") else k, v)
                          for k, v in sd.items())
-        rdr.recognizer.load_state_dict(sd)
+        # load into the underlying module whether or not reader.recognizer is
+        # wrapped in DataParallel (GPU builds wrap it; CPU builds don't)
+        target = rdr.recognizer
+        target = target.module if hasattr(target, "module") else target
+        target.load_state_dict(sd)
         _FT_READERS[key] = rdr
     return _FT_READERS[key]
 

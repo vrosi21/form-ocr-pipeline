@@ -295,12 +295,16 @@ def train_recognizer(out_dir: str, ckpt_path: str, epochs: int = 20,
         for tensors, labels in loader:
             tensors = tensors.to(device)
             text, length = converter.encode(labels, batch_max_length)
+            text = text.to(device)
+            length = length.to(device)
             B = tensors.size(0)
             dummy = torch.LongTensor(B, batch_max_length + 1).fill_(0).to(device)
             preds = model(tensors, dummy)                       # [B, T, C] logits
-            preds_size = torch.IntTensor([preds.size(1)] * B)
+            preds_size = torch.IntTensor([preds.size(1)] * B).to(device)
             logp = preds.log_softmax(2).permute(1, 0, 2)         # [T, B, C]
             cost = criterion(logp, text, preds_size, length)
+            # NOTE: zero_infinity=True forces the native (non-cuDNN) CTC kernel,
+            # which requires text/length/preds_size on the SAME device as logp.
 
             optimizer.zero_grad()
             cost.backward()
@@ -319,7 +323,9 @@ def train_recognizer(out_dir: str, ckpt_path: str, epochs: int = 20,
         print(f"epoch {ep+1}/{n_epochs}  mean loss {epoch_loss:.4f}", flush=True)
 
     os.makedirs(os.path.dirname(ckpt_path), exist_ok=True)
-    torch.save(model.state_dict(), ckpt_path)
+    # save unwrapped (no 'module.' prefix) so the checkpoint loads on CPU or GPU
+    to_save = model.module if hasattr(model, "module") else model
+    torch.save(to_save.state_dict(), ckpt_path)
     print(f"saved fine-tuned recognizer -> {ckpt_path}")
     return {"ckpt": ckpt_path, "kept": len(kept), "dropped_oov": dropped,
             "epochs": n_epochs, "loss_history": history, "smoke": smoke}
