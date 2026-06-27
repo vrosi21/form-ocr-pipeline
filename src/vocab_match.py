@@ -36,9 +36,16 @@ MULTI = {"allergies", "medical_history", "current_medications"}
 NONE_TOKENS = {"", "none", "none known", "nil", "n/a", "na", "no", "unknown"}
 
 
-def load_vocab(vocab_dir: str) -> dict:
+def doctor_choices(db) -> list:
+    """Doctor pool = the unique doctor_names seen across the db's visit history."""
+    return sorted({v["doctor_name"] for p in db for v in p.get("visits", [])
+                   if v.get("doctor_name")})
+
+
+def load_vocab(vocab_dir: str, db=None) -> dict:
     """Load each field's candidate list. medications.json is [{name,dosages}] ->
-    expand to 'Name' and 'Name dose' strings."""
+    expand to 'Name' and 'Name dose' strings. If `db` is given, also builds a
+    doctor_name vocab from the db's visit history (lets L2 snap doctor names)."""
     vocab = {}
     for field, fname in FIELD_VOCAB.items():
         data = json.load(open(os.path.join(vocab_dir, fname + ".json"),
@@ -52,6 +59,8 @@ def load_vocab(vocab_dir: str) -> dict:
             vocab[field] = choices
         else:
             vocab[field] = list(data)
+    if db is not None:
+        vocab["doctor_name"] = doctor_choices(db)
     return vocab
 
 
@@ -77,9 +86,18 @@ def snap_field(field: str, value: str, vocab: dict, threshold: float = 0.6) -> s
 
 
 def apply_l2(fields: dict, vocab: dict, threshold: float = 0.6) -> dict:
-    """Return a copy of `fields` with the vocab-backed fields snapped (L2)."""
+    """Return a copy of `fields` with the vocab-backed fields snapped (L2).
+    Also snaps doctor_name when a doctor vocab was loaded (db-derived)."""
     out = dict(fields)
-    for f in FIELD_VOCAB:
+    snap_fields = list(FIELD_VOCAB) + (["doctor_name"] if "doctor_name" in vocab else [])
+    for f in snap_fields:
         if f in out:
             out[f] = snap_field(f, out.get(f, ""), vocab, threshold)
     return out
+
+
+def in_vocab(field: str, value: str, vocab: dict) -> bool:
+    """True if value (single field) is a legal vocab entry — used for review flags."""
+    if field not in vocab:
+        return True
+    return (value or "").strip() in set(vocab[field])

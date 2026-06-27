@@ -22,6 +22,12 @@ import json
 IDENTITY = ["last_name", "first_name", "date_of_birth", "age", "gender", "ssn",
             "insurance_number", "phone_number", "blood_type", "address", "email"]
 
+# Slow-changing patient attributes that also live in the DB. Pulled from the DB
+# by default (they're far more accurate there), but the app should flag them for
+# review when the form disagrees with a confident read (a possible update).
+DB_STATIC = ["allergies", "current_medications", "medical_history",
+             "emergency_contact_name", "emergency_contact_phone"]
+
 # Per-field weights for the match score (SSN + insurance dominate: near-unique).
 WEIGHTS = {
     "ssn": 3.0, "insurance_number": 3.0,
@@ -62,21 +68,29 @@ def match(form: dict, db: list):
     return best_p, best_s, best_s - second_s
 
 
-def apply_l3(form_fields: dict, db: list, threshold: float = 0.55):
+def apply_l3(form_fields: dict, db: list, threshold: float = 0.55,
+             include_static: bool = True):
     """
-    L3: match, and on a confident match overwrite the IDENTITY fields with the
-    db's canonical values (mutable/visit fields stay from the form). Returns
-    (final_fields, info) where info = {matched, patient_id, score, margin}.
+    L3: match, and on a confident match overwrite the DB-backed fields with the
+    patient's canonical values. IDENTITY is always pulled; DB_STATIC (slow-changing
+    attributes) is pulled when include_static=True. The current-visit fields
+    (date_of_visit/department/doctor/complaint) always stay from the form.
+
+    Returns (final_fields, info) where info includes the matched db record
+    ("patient") so the app/review layer can compare form vs record.
     """
     best, s, margin = match(form_fields, db)
     out = dict(form_fields)
     matched = s >= threshold
+    pulled = []
     if matched:
-        for f in IDENTITY:
+        for f in IDENTITY + (DB_STATIC if include_static else []):
             if f in best:
                 out[f] = best[f]
+                pulled.append(f)
     return out, {"matched": matched, "patient_id": best.get("patient_id"),
-                 "score": round(s, 3), "margin": round(margin, 3)}
+                 "score": round(s, 3), "margin": round(margin, 3),
+                 "db_fields": pulled, "patient": best if matched else None}
 
 
 def register_visit(patient: dict, form_fields: dict) -> dict:
