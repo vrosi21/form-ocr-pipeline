@@ -1,0 +1,20 @@
+# form-ocr_v2 — dependencies
+# form template generation
+Pillow>=10.0          # form rendering
+qrcode>=7.4           # scannable form-ID QR
+# synthetic data generation: standard library only
+# preprocessing (notebook 02)
+numpy>=1.24
+opencv-python>=4.8    # finder-pattern detection, perspective warp
+PyMuPDF>=1.23         # extract the 100-page scan PDF into per-form images
+matplotlib>=3.7       # visual sanity-check plots in notebook 02
+# OCR extraction (notebook 03 / src/ocr.py) — L0 baseline
+# CPU build is fine (no CUDA GPU on Intel i5-1345U). After `pip install -r requirements.txt`,
+# the first EasyOCR run downloads the ~64MB english_g2 recognizer model automatically.
+easyocr>=1.7           # L0 OCR engine (allow-list per field); pulls torch + torchvision
+torch>=2.0             # easyocr backend (CPU build ok)
+pandas>=2.0            # predictions table + eval in notebook 03
+
+# notebooks
+jupyter>=1.0
+ipykernel>=6.0

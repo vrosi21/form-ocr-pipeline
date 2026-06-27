@@ -1,0 +1,1299 @@
+[
+  {
+    "patient_id": "P0001",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0002",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0003",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0004",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0005",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0006",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0007",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0008",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0009",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0010",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0011",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0012",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0013",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0014",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0015",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0016",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0017",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0018",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0019",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0020",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0021",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0022",
+    "ok": true,
+    "checkboxes": {
+      "gender": [],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0023",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0024",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0025",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0026",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0027",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0028",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0029",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0030",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0031",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0032",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0033",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0034",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0035",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0036",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0037",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0038",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0039",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0040",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0041",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0042",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0043",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0044",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0045",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0046",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0047",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0048",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0049",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0050",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0051",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0052",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0053",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0054",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0055",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0056",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0057",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0058",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0059",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0060",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0061",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0062",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0063",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0064",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0065",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0066",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0067",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0068",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0069",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0070",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0071",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0072",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0073",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0074",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0075",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0076",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0077",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0078",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0079",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0080",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0081",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0082",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0083",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0084",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0085",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0086",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0087",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0088",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0089",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0090",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0091",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0092",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0093",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "F"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0094",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0095",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0096",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "Other"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0097",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:AB",
+        "rh:+"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0098",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:A",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0099",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:B",
+        "rh:-"
+      ]
+    }
+  },
+  {
+    "patient_id": "P0100",
+    "ok": true,
+    "checkboxes": {
+      "gender": [
+        "M"
+      ],
+      "blood_type": [
+        "group:O",
+        "rh:-"
+      ]
+    }
+  }
+]
