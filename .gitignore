@@ -34,3 +34,6 @@ data/generated/split_train_val.json
 #   data/scans/preprocess_report.json
 #   data/vocab/**
 #   data/generated/patient_db.json , validation_forms.csv
+
+# MNIST download (digit_model pretrain)
+data/mnist/
