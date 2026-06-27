@@ -157,28 +157,37 @@ def _to_rgb(gray: np.ndarray) -> np.ndarray:
     return np.stack([gray, gray, gray], axis=-1)
 
 
+def _recognize_tokens(reader, gray: np.ndarray, allowlist: str) -> list:
+    """
+    Recognition-only read of an already-cropped image (a field or a single comb
+    cell). Uses reader.recognize() instead of reader.readtext(): the crop IS the
+    text region, so we skip EasyOCR's detection stage — which routinely finds no
+    box on tiny single-character crops and returns empty. Returns token strings.
+    """
+    res = reader.recognize(gray, allowlist=allowlist, detail=0, paragraph=False)
+    tokens = []
+    for item in res:
+        if isinstance(item, str):
+            tokens.append(item)
+        elif isinstance(item, (list, tuple)) and len(item) >= 2:
+            tokens.append(str(item[1]))   # (bbox, text, conf) if detail!=0
+    return tokens
+
+
 def _ocr_text(reader, gray: np.ndarray, allowlist: str) -> str:
-    """OCR a multi-character text crop -> single joined string (reading order)."""
+    """Read a multi-character text crop -> single joined string."""
     if gray is None:
         return ""
-    results = reader.readtext(
-        _to_rgb(gray), allowlist=allowlist, detail=1, paragraph=False
-    )
-    # results: [(bbox, text, conf), ...]; order left-to-right by box x.
-    results = sorted(results, key=lambda r: r[0][0][0])
-    parts = [r[1].strip() for r in results if r[1].strip()]
+    parts = [t.strip() for t in _recognize_tokens(reader, gray, allowlist) if t.strip()]
     return " ".join(parts).strip()
 
 
 def _ocr_char(reader, gray: np.ndarray, allowlist: str) -> str:
-    """OCR a single comb cell -> at most one allowed character."""
+    """Read a single comb cell -> at most one allowed character."""
     if gray is None:
         return ""
-    results = reader.readtext(
-        _to_rgb(gray), allowlist=allowlist, detail=0, paragraph=False
-    )
     legal = set(allowlist)
-    for token in results:
+    for token in _recognize_tokens(reader, gray, allowlist):
         for ch in token:
             if ch in legal:
                 return ch
