@@ -97,12 +97,17 @@ def derive_cell_chars(field: str, cfg: dict, label: str):
     return list(raw)
 
 
-def iter_base_samples(crops_root: str, field_map: dict, labels_by_pid: dict, pids):
+def iter_base_samples(crops_root: str, field_map: dict, labels_by_pid: dict, pids,
+                      text_only: bool = False):
     """
     Yield (crop_path, label, field, pid, cell_idx) for every trainable crop:
       text_box  -> the field crop, label = the field's text (skip empty)
       comb      -> each non-empty cell crop, label = that single character
-    Checkbox fields are skipped (not OCR'd).
+    Checkbox fields are skipped (not OCR'd). With text_only=True, comb fields are
+    skipped too: digits are handled by the dedicated CNN (src/digit_model.py) and
+    insurance letters fall back to pretrained EasyOCR, so EasyOCR fine-tunes on
+    multi-character text only — avoiding the single-char-digit imbalance that
+    previously hurt chief_complaint/insurance.
     """
     for pid in pids:
         d = os.path.join(crops_root, pid)
@@ -110,6 +115,8 @@ def iter_base_samples(crops_root: str, field_map: dict, labels_by_pid: dict, pid
         for fname, cfg in field_map["fields"].items():
             t = cfg["type"]
             if t == "checkbox":
+                continue
+            if text_only and t == "comb":
                 continue
             if t == "text_box":
                 lab = str(row.get(fname, "")).strip()
@@ -166,7 +173,8 @@ def _safe_name(field: str, pid: str, cell, aug: int) -> str:
 
 def build_recog_dataset(crops_root: str, field_map: dict, labels_by_pid: dict,
                         train_pids, out_dir: str, aug_factor: int = 4,
-                        seed: int = 42, verbose: bool = True) -> dict:
+                        seed: int = 42, verbose: bool = True,
+                        text_only: bool = False) -> dict:
     """
     Materialize a self-contained recognition training set for the TRAIN pids:
 
@@ -194,7 +202,8 @@ def build_recog_dataset(crops_root: str, field_map: dict, labels_by_pid: dict,
         wr = csv.writer(fh)
         wr.writerow(["filename", "label", "field", "pid", "aug"])
         for src, label, field, pid, cell in iter_base_samples(
-                crops_root, field_map, labels_by_pid, train_pids):
+                crops_root, field_map, labels_by_pid, train_pids,
+                text_only=text_only):
             n_base += 1
             per_field[field] = per_field.get(field, 0) + 1
             base_img = Image.open(src).convert("L")
