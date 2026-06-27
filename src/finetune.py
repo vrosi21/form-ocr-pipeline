@@ -227,10 +227,11 @@ def load_recog_pairs(out_dir: str):
 # --------------------------------------------------------------------------- #
 # (B) Training — CTC fine-tune of the EasyOCR recognizer
 # --------------------------------------------------------------------------- #
-def train_recognizer(out_dir: str, ckpt_path: str, epochs: int = 20,
-                     lr: float = 1e-4, batch_size: int = 32, imgH: int = 64,
+def train_recognizer(out_dir: str, ckpt_path: str, epochs: int = 30,
+                     lr: float = 1e-5, batch_size: int = 32, imgH: int = 64,
                      imgW: int = 320, gpu: bool = False, seed: int = 42,
-                     smoke: bool = False, log_every: int = 50) -> dict:
+                     smoke: bool = False, log_every: int = 50,
+                     val_frac: float = 0.1, patience: int = 5) -> dict:
     """
     Fine-tune the EasyOCR recognizer with CTC on the materialized train_recog set
     and save the recognizer state-dict to ckpt_path.
@@ -263,6 +264,21 @@ def train_recognizer(out_dir: str, ckpt_path: str, epochs: int = 20,
 
     batch_max_length = int(imgW / 10)
 
+    # Group all augmentations of one base crop together, then hold out a small
+    # validation slice for model selection. Grouping by base prevents the same
+    # crop's augmentations from straddling train and val.
+    def _base_key(path):
+        return os.path.basename(path).rsplit("__aug", 1)[0]
+
+    bases = {}
+    for p, l in kept:
+        bases.setdefault(_base_key(p), []).append((p, l))
+    base_keys = sorted(bases)
+    random.Random(seed).shuffle(base_keys)
+    n_val = 1 if smoke else max(1, int(round(len(base_keys) * val_frac)))
+    val_items   = [it for k in base_keys[:n_val] for it in bases[k]]
+    train_items = [it for k in base_keys[n_val:] for it in bases[k]]
+
     class CropDS(Dataset):
         def __init__(self, items):
             self.items = items
@@ -277,40 +293,49 @@ def train_recognizer(out_dir: str, ckpt_path: str, epochs: int = 20,
     align = AlignCollate(imgH=imgH, imgW=imgW, keep_ratio_with_pad=True)
 
     def collate(batch):
-        imgs = [b[0] for b in batch]
-        labels = [b[1] for b in batch]
-        return align(imgs), labels
+        return align([b[0] for b in batch]), [b[1] for b in batch]
 
-    loader = DataLoader(CropDS(kept), batch_size=batch_size, shuffle=True,
-                        collate_fn=collate, num_workers=0)
+    train_loader = DataLoader(CropDS(train_items), batch_size=batch_size,
+                              shuffle=True, collate_fn=collate, num_workers=0)
+    val_loader = DataLoader(CropDS(val_items), batch_size=batch_size,
+                            shuffle=False, collate_fn=collate, num_workers=0)
 
     criterion = torch.nn.CTCLoss(zero_infinity=True).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
-    n_epochs = 1 if smoke else epochs
-    model.train()
-    history = []
-    for ep in range(n_epochs):
-        running, nb = 0.0, 0
-        for tensors, labels in loader:
-            tensors = tensors.to(device)
-            text, length = converter.encode(labels, batch_max_length)
-            text = text.to(device)
-            length = length.to(device)
-            B = tensors.size(0)
-            dummy = torch.LongTensor(B, batch_max_length + 1).fill_(0).to(device)
-            preds = model(tensors, dummy)                       # [B, T, C] logits
-            preds_size = torch.IntTensor([preds.size(1)] * B).to(device)
-            logp = preds.log_softmax(2).permute(1, 0, 2)         # [T, B, C]
-            cost = criterion(logp, text, preds_size, length)
-            # NOTE: zero_infinity=True forces the native (non-cuDNN) CTC kernel,
-            # which requires text/length/preds_size on the SAME device as logp.
+    def batch_cost(tensors, labels):
+        # zero_infinity=True forces the native (non-cuDNN) CTC kernel, so every
+        # tensor (logp, text, lengths) must live on the same device.
+        tensors = tensors.to(device)
+        text, length = converter.encode(labels, batch_max_length)
+        text, length = text.to(device), length.to(device)
+        B = tensors.size(0)
+        dummy = torch.LongTensor(B, batch_max_length + 1).fill_(0).to(device)
+        preds = model(tensors, dummy)                       # [B, T, C] logits
+        preds_size = torch.IntTensor([preds.size(1)] * B).to(device)
+        logp = preds.log_softmax(2).permute(1, 0, 2)         # [T, B, C]
+        return criterion(logp, text, preds_size, length)
 
+    def _save():
+        os.makedirs(os.path.dirname(ckpt_path), exist_ok=True)
+        # save unwrapped (no 'module.' prefix) so it loads on CPU or GPU
+        to_save = model.module if hasattr(model, "module") else model
+        torch.save(to_save.state_dict(), ckpt_path)
+
+    n_epochs = 1 if smoke else epochs
+    history = []
+    best_val, best_epoch, patience_left = float("inf"), -1, patience
+    print(f"train {len(train_items)} / val {len(val_items)} crop samples", flush=True)
+
+    for ep in range(n_epochs):
+        model.train()
+        running, nb = 0.0, 0
+        for tensors, labels in train_loader:
+            cost = batch_cost(tensors, labels)
             optimizer.zero_grad()
             cost.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
             optimizer.step()
-
             running += float(cost.item())
             nb += 1
             if nb % log_every == 0:
@@ -318,14 +343,46 @@ def train_recognizer(out_dir: str, ckpt_path: str, epochs: int = 20,
                       f"loss {running/nb:.4f}", flush=True)
             if smoke and nb >= 5:
                 break
-        epoch_loss = running / max(1, nb)
-        history.append(epoch_loss)
-        print(f"epoch {ep+1}/{n_epochs}  mean loss {epoch_loss:.4f}", flush=True)
 
+        # validation loss for model selection
+        model.eval()
+        vrun, vnb = 0.0, 0
+        with torch.no_grad():
+            for tensors, labels in val_loader:
+                vrun += float(batch_cost(tensors, labels).item())
+                vnb += 1
+                if smoke and vnb >= 2:
+                    break
+        train_loss = running / max(1, nb)
+        val_loss = vrun / max(1, vnb)
+        history.append({"epoch": ep + 1, "train": train_loss, "val": val_loss})
+
+        improved = val_loss < best_val - 1e-4
+        print(f"epoch {ep+1}/{n_epochs}  train {train_loss:.4f}  "
+              f"val {val_loss:.4f}{'  * best, saved' if improved else ''}",
+              flush=True)
+        if improved:
+            best_val, best_epoch, patience_left = val_loss, ep + 1, patience
+            _save()
+        else:
+            patience_left -= 1
+            if patience_left <= 0 and not smoke:
+                print(f"early stop: no val improvement for {patience} epochs",
+                      flush=True)
+                break
+
+    if best_epoch < 0:          # smoke / never-improved safety net
+        _save()
+        best_epoch, best_val = n_epochs, history[-1]["val"] if history else float("nan")
+    # dump the loss history next to the checkpoint so the notebook can plot it
+    # even on a session where training was skipped (checkpoint already existed).
     os.makedirs(os.path.dirname(ckpt_path), exist_ok=True)
-    # save unwrapped (no 'module.' prefix) so the checkpoint loads on CPU or GPU
-    to_save = model.module if hasattr(model, "module") else model
-    torch.save(to_save.state_dict(), ckpt_path)
-    print(f"saved fine-tuned recognizer -> {ckpt_path}")
+    hist_path = os.path.join(os.path.dirname(ckpt_path), "history.json")
+    with open(hist_path, "w", encoding="utf-8") as fh:
+        json.dump({"history": history, "best_epoch": best_epoch,
+                   "best_val": best_val}, fh, indent=1)
+    print(f"best epoch {best_epoch}  (val {best_val:.4f})  -> {ckpt_path}", flush=True)
+    print(f"loss history -> {hist_path}", flush=True)
     return {"ckpt": ckpt_path, "kept": len(kept), "dropped_oov": dropped,
-            "epochs": n_epochs, "loss_history": history, "smoke": smoke}
+            "best_epoch": best_epoch, "best_val": best_val,
+            "history": history, "smoke": smoke}
