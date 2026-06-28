@@ -37,7 +37,15 @@ def validate_field(field: str, value, vocab: dict | None = None) -> tuple:
         return True, ""
 
     if field in ("date_of_birth", "date_of_visit"):
-        return (True, "") if is_real_date(v) else (False, "not a real date (dd/mm/yyyy)")
+        if not is_real_date(v):
+            return False, "not a real date (dd/mm/yyyy)"
+        year = int(v.strip()[-4:])
+        now = datetime.now().year
+        if field == "date_of_birth" and not (1900 <= year <= now):
+            return False, f"implausible birth year {year}"
+        if field == "date_of_visit" and not (2000 <= year <= now + 1):
+            return False, f"implausible visit year {year}"
+        return True, ""
     if field in ("phone_number", "emergency_contact_phone"):
         return (True, "") if re.fullmatch(r"\d{3}-\d{3}-\d{4}", v) else (False, "bad phone format")
     if field == "ssn":

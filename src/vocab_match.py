@@ -42,6 +42,14 @@ def doctor_choices(db) -> list:
                    if v.get("doctor_name")})
 
 
+def email_domains(db) -> list:
+    """The finite set of e-mail domains in use (gmail.com, yahoo.com, ...).
+    The local part of an address is free-form, but the domain is drawn from a
+    handful of providers — so a noisy read ('gmai1.com') can be snapped back."""
+    return sorted({p["email"].split("@", 1)[1].lower()
+                   for p in db if p.get("email") and "@" in p["email"]})
+
+
 def load_vocab(vocab_dir: str, db=None) -> dict:
     """Load each field's candidate list. medications.json is [{name,dosages}] ->
     expand to 'Name' and 'Name dose' strings. If `db` is given, also builds a
@@ -61,7 +69,26 @@ def load_vocab(vocab_dir: str, db=None) -> dict:
             vocab[field] = list(data)
     if db is not None:
         vocab["doctor_name"] = doctor_choices(db)
+        vocab["email_domain"] = email_domains(db)
     return vocab
+
+
+def snap_email(value: str, vocab: dict, threshold: float = 0.7) -> str:
+    """Snap an e-mail's domain to the nearest known provider; local part untouched.
+    'krystal.dosle@gmai1.com' -> 'krystal.dosle@gmail.com'. Unknown/too-far
+    domains are left as read."""
+    value = (value or "").strip()
+    domains = vocab.get("email_domain")
+    if not domains or value.count("@") != 1:
+        return value
+    local, dom = value.split("@", 1)
+    if not local or not dom:
+        return value
+    lower_map = {d.lower(): d for d in domains}
+    if dom.lower() in lower_map:
+        return f"{local}@{lower_map[dom.lower()]}"
+    hit = difflib.get_close_matches(dom.lower(), list(lower_map), n=1, cutoff=threshold)
+    return f"{local}@{lower_map[hit[0]]}" if hit else value
 
 
 def _snap_token(tok: str, choices: list, lower_map: dict, threshold: float) -> str:
@@ -93,6 +120,8 @@ def apply_l2(fields: dict, vocab: dict, threshold: float = 0.6) -> dict:
     for f in snap_fields:
         if f in out:
             out[f] = snap_field(f, out.get(f, ""), vocab, threshold)
+    if "email" in out:
+        out["email"] = snap_email(out.get("email", ""), vocab)
     return out
 
 

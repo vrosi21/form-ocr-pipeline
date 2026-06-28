@@ -14,6 +14,7 @@ matplotlib>=3.7       # visual sanity-check plots in notebook 02
 easyocr>=1.7           # L0 OCR engine (allow-list per field); pulls torch + torchvision
 torch>=2.0             # easyocr backend (CPU build ok)
 pandas>=2.0            # predictions table + eval in notebook 03
+streamlit>=1.30        # app.py front end (form viewer + review queue)
 
 # notebooks
 jupyter>=1.0
