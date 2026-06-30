@@ -40,6 +40,31 @@ def load_db(path: str) -> list:
     return json.load(open(path, encoding="utf-8"))
 
 
+def save_db(db: list, path: str) -> None:
+    """Persist the patient db back to disk (after an update / visit registration)."""
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(db, fh, indent=2, ensure_ascii=False)
+
+
+# The patient-record fields that live in the DB and may be overwritten on review.
+PATIENT_FIELDS = IDENTITY + DB_STATIC
+
+
+def update_patient(patient: dict, fields: dict, keys=None) -> dict:
+    """Overwrite the given patient-record keys in place from `fields`.
+    Returns {field: (old, new)} for the keys that actually changed (app use)."""
+    keys = keys if keys is not None else PATIENT_FIELDS
+    changed = {}
+    for f in keys:
+        if f not in fields:
+            continue
+        old, new = patient.get(f, ""), fields.get(f, "")
+        if str(old) != str(new):
+            changed[f] = (old, new)
+            patient[f] = new
+    return changed
+
+
 def _sim(a, b) -> float:
     a = ("" if a is None else str(a)).strip().lower()
     b = ("" if b is None else str(b)).strip().lower()
